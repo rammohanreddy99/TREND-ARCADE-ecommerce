@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Register - TREND ARCADE</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #088178 0%, #088178 50%, #E3E6F3 50%, #E3E6F3 100%);
+            position: relative;
+        }
+        .login-box {
+            background: #fff; 
+            padding: 50px 40px;
+            border-radius: 4px; /* షార్ప్ కార్పొరేట్ లుక్ కోసం అంచులు తక్కువ రౌండ్ చేశాం */
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            width: 360px;
+            text-align: center;
+            border-top: 5px solid #088178;
+        }
+        .login-box img {
+            margin-bottom: 20px;
+        }
+        .login-box h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #222;
+        }
+        .login-box input {
+            width: 100%;
+            padding: 12px 15px;
+            margin: 10px 0;
+            border: 1px solid #e2e2e2;
+            border-radius: 4px;
+            outline: none;
+            box-sizing: border-box;
+            background: #fff;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+        .login-box input:focus {
+            border-color: #088178;
+            background: #f8fff9; 
+        }
+        .login-box button {
+            width: 100%;
+            background-color: #088178;
+            color: #fff;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+            font-size: 15px;
+            letter-spacing: 1px;
+            transition: 0.2s ease;
+        }
+        .login-box button:hover {
+            background-color: #06655e;
+        }
+        .login-box p {
+            font-size: 13px;
+            color: #555;
+            margin-top: 15px;
+        }
+        .login-box p span {
+            color: #088178;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: underline;
+        }
+        #register-form {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="login-box">
+            <a href="index.html" class="brand-logo login-page-logo">
+                <i class="bi bi-lightning-charge-fill"></i> TREND <span class="logo-accent">ARCADE</span>
+            </a>
+            
+            <form id="login-form" onsubmit="handleLogin(event)">
+                <h2>Sign In</h2>
+                <input type="text" id="login-username" placeholder="Username" required>
+                <input type="password" id="login-password" placeholder="Password" required>
+                <button type="submit">Login</button>
+                <p>Don't have an account? <span onclick="toggleForms('register')">Sign Up</span></p>
+            </form>
+
+            <form id="register-form" onsubmit="handleRegister(event)">
+                <h2>Create Account</h2>
+                <input type="text" id="reg-fullname" placeholder="Your Full Name" required>
+                <input type="text" id="reg-username" placeholder="Username" required>
+                <input type="email" id="reg-email" placeholder="Your Email" required>
+                <input type="tel" id="reg-phone" placeholder="Your Phone Number" pattern="[0-9]{10}" title="Please Enter Your 10 Digit Number" required>
+                <input type="password" id="reg-password" placeholder="Create Password" required>
+                <button type="submit">Register</button>
+                <p>Already have an account? <span onclick="toggleForms('login')">Sign In</span></p>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
