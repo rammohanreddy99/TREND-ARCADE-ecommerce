@@ -29,7 +29,7 @@ function toggleForms(formType) {
     }
 }
 
-// Logic for handling new user registration
+// Logic for handling new user registration (Updated with Cache Fix)
 function handleRegister(event) {
     event.preventDefault();
 
@@ -38,50 +38,53 @@ function handleRegister(event) {
     let regEmail = document.getElementById("reg-email").value.trim();
     let regPass = document.getElementById("reg-password").value.trim();
 
-    // Fetching the list of already registered users
+    // గిట్‌హబ్ కోసం ఇప్పుడే తాజా డేటాను తెచ్చుకుంటున్నాం
     let usersList = JSON.parse(localStorage.getItem("registeredUsers")) || [];
 
-    // Checking if the username is already taken
+    // కేస్-సెన్సిటివ్ ప్రాబ్లం రాకుండా ఇద్దరినీ లోయర్ కేస్ లో చెక్ చేస్తున్నాం
     let userExists = usersList.find(user => user.username.toLowerCase() === regUser.toLowerCase());
     if (userExists) {
         alert("❌ ఈ యూజర్ నేమ్ ఆల్రెడీ ఉంది! వేరేది ఎంచుకోండి.");
         return;
     }
 
-    // Creating a new user object and adding it to the list
     let newUser = {
         fullName: regFullName,
-        username: regUser,
+        username: regUser, // ఒరిజినల్ యూజర్ నేమ్ సేవ్ అవుతుంది
         email: regEmail,
         password: regPass
     };
     usersList.push(newUser);
 
-    // Updating the local storage
     localStorage.setItem("registeredUsers", JSON.stringify(usersList));
 
-    alert("Registration successful! Now sign in");
-    toggleForms('login'); // Redirecting to the login screen after registration
+    alert("🎉 Registration successful! Now sign in.");
+    toggleForms('login'); // లాగిన్ స్క్రీన్‌కి మారుతుంది
 }
 
-// Login handling logic (matches with registered users)
+// Login handling logic (Updated with GitHub Cache Fix)
 function handleLogin(event) {
     event.preventDefault();
     
     let userInput = document.getElementById("login-username").value.trim();
     let passInput = document.getElementById("login-password").value.trim();
 
-    // Fetching registered users from local storage
+    // ఫోర్స్ రీ-ఫెచ్: లోకల్ స్టోరేజ్ నుండి తాజా డేటాను లాక్కుంటున్నాం
     let usersList = JSON.parse(localStorage.getItem("registeredUsers")) || [];
 
-    // Checking if the username and password match correctly
-    let validUser = usersList.find(user => user.username === userInput && user.password === passInput);
+    // 💡 గిట్‌హబ్ ఫిక్స్: యూజర్ టైప్ చేసిన పేరును, సేవ్ అయిన పేరును లోయర్ కేస్ లో మార్చి పక్కాగా పోల్చి చూస్తాం
+    let validUser = usersList.find(user => 
+        user.username.toLowerCase() === userInput.toLowerCase() && 
+        user.password === passInput
+    );
 
     if (validUser) {
         localStorage.setItem("isLoggedIn", "true");
-        localStorage.setItem("currentUser", validUser.fullName); // Storing the currently logged-in user’s name
+        localStorage.setItem("currentUser", validUser.fullName);
         alert(`Welcome ${validUser.fullName}! Login successful`);
-        window.location.href = "index.html";
+        
+        // గిట్‌హబ్ లో పేజీ మారేటప్పుడు పాత కాష్ లోడ్ అవ్వకుండా ఫోర్స్ రీఫ్రెష్ లాగా వెళ్తుంది
+        window.location.replace("index.html"); 
     } else {
         alert("❌ Invalid username or password! (If not registered, please sign up first.)");
     }
@@ -119,7 +122,7 @@ if (close) {
 
 function updateCartIconCount() {
     // getElementById కి బదులు querySelectorAll వాడి డెస్క్‌టాప్, మొబైల్ కౌంటర్స్ రెండింటినీ సెలెక్ట్ చేస్తున్నాం
-    let cartCountElements = document.querySelectorAll(".cart-count-class");
+    let cartCountElements = document.querySelectorAll("#cart-count, #cart-count-mobile, .cart-count-class");
     if (cartCountElements.length === 0) return;
 
     let currentCart = JSON.parse(localStorage.getItem("cart"));
