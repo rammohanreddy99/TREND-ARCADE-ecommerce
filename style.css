@@ -1025,152 +1025,191 @@ footer .copyright{
 }
 
 
-@media (max-width: 477px){
+@media (max-width: 425px) {
+
     #mobile a #cart-count-mobile {
         position: absolute;
-        top: 12px;         
-        right: 40px;       
+        top: 12px;          
+        right: 50px;        
         background-color: #088178; 
         color: white;       
-        font-size: 11px;   
+        font-size: 10px;    
         font-weight: 700;
         border-radius: 50%; 
-        padding: 2px 5px;   
+        padding: 1px 5px;   
         min-width: 14px;
         text-align: center;
-        line-height: 1;
-        z-index: 1;
+        line-height: 1.2;
+        z-index: 1;         
     }
-    .section-p1{
+
+   
+    #navbar {
+        z-index: 9999 !important;
+    }
+
+    .section-p1 {
         padding: 20px;
     }
-    #header{
-        padding: 10px 30px;
+
+    #header {
+        padding: 10px 20px; 
     }
-    h1{
-        font-size: 28px;
+
+    h1 {
+        font-size: 26px;    
     }
-    h2{
-        font-size: 32px;
+
+    h2 {
+        font-size: 28px;    
     }
-    #hero{
+
+    #hero {
         padding: 0 20px;
         background-position: 55%;
     } 
-    #feature{
+
+    #feature {
         justify-content: space-between;
     }
-    #feature .fe-box{
-        width: 155px;
+
+    #feature .fe-box {
+        width: 46%;         
         margin: 0 0 15px 0;
     }
-    #product1 .pro{
-        width: 100%;
+
+    #product1 .pro-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
     }
-    #banner{
-        height: 40vh;
+
+    #product1 .pro {
+        width: 48% !important; 
+        margin: 10px 0;
+        padding: 10px 5px;
     }
+
+    #banner {
+        height: 35vh;       
+    }
+
     #sm-banner .banner-box {
-        height: 40vh;
+        height: 35vh;
     }
+
     #sm-banner .banner-box2 {
         margin-top: 20px;
     }
-    #banner3{
+
+    #banner3 {
         padding: 0 20px;
     }
-     #banner3 .banner-box {
+
+    #banner3 .banner-box {
         width: 100%;
     }
-    #newsleeter{
+
+    #newsleeter { 
         padding: 40px 20px;
     }
+
     #newsletter .form {
         width: 100%;
     }
-    footer .copyright{
+
+    footer .copyright {
         text-align: start;
     }
 
     /* Single Product */
-
-    #prodetails{
+    #prodetails {
         display: flex;
         flex-direction: column;
     }
+
     #prodetails .single-pro-image {
         width: 100%;
         margin-right: 0px;
     }
+
     #prodetails .single-pro-details {
         width: 100%;
     }
 
     /* Blog Page */
-
     #blog {
         padding: 100px 20px 0 20px;
     }
+
     #blog .blog-box {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
     }
+
     #blog .blog-img {
         width: 100%;
         margin-right: 0px;
         margin-bottom: 30px;
     }
+
     #blog .blog-details {
         width: 100%;
     }
 
     /* About Page */
-
     #about-head {
         flex-direction: column;
     }
+
     #about-head img {
         width: 100%;
         margin-bottom: 20px;
     }
+
     #about-head div {
         padding-left: 0px;
     }
+
     #about-app .video {
         width: 90%;
     }
 
     /* Contact Page */
-
     #contact-details {
         flex-direction: column;
     }
+
     #contact-details .details {
         width: 100%;
         margin-bottom: 30px;
     }
+
     #contact-details .map {
         width: 100%;
     }
+
     #form-details {
         margin: 10px;
         padding: 30px 10px;
         flex-wrap: wrap;
     }
+
     #form-details form {
         width: 100%;
         margin-bottom: 30px;
     }
 
-    /* Cart Page */
-
+    /* Cart Page & Checkout */
     #cart-add {
         flex-direction: column;
     }
+
     #cart-add #coupon {
         width: 100%;
     }
+
     #subtotal {
         width: 100%;
         padding: 20px;
