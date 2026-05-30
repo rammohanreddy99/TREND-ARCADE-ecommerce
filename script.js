@@ -118,23 +118,24 @@ if (close) {
 // 2. LIVE CART ICON COUNTER FUNCTION
 
 function updateCartIconCount() {
-    let cartCountElem = document.getElementById("cart-count");
-    if (!cartCountElem) return;
+    // getElementById కి బదులు querySelectorAll వాడి డెస్క్‌టాప్, మొబైల్ కౌంటర్స్ రెండింటినీ సెలెక్ట్ చేస్తున్నాం
+    let cartCountElements = document.querySelectorAll(".cart-count-class");
+    if (cartCountElements.length === 0) return;
 
     let currentCart = JSON.parse(localStorage.getItem("cart"));
     
-    // Safety check: Shows 0 if the cart doesn’t exist or isn’t an array
-    if (!currentCart || !Array.isArray(currentCart)) {
-        cartCountElem.innerText = "0";
-        return;
-    }
-
     let totalItems = 0;
-    currentCart.forEach(item => {
-        totalItems += (parseInt(item.quantity) || 1);
-    });
+    // Safety check: ఒకవేళ కార్ట్ ఉంటేనే కౌంట్ లెక్కపెడుతుంది
+    if (currentCart && Array.isArray(currentCart)) {
+        currentCart.forEach(item => {
+            totalItems += (parseInt(item.quantity) || 1);
+        });
+    }
     
-    cartCountElem.innerText = totalItems;
+    // లూప్ ద్వారా డెస్క్‌టాప్ మరియు మొబైల్ ఐకాన్స్ రెండింటిలోనూ నెంబర్ అప్‌డేట్ అవుతుంది
+    cartCountElements.forEach(elem => {
+        elem.innerText = totalItems;
+    });
 }
 
 // Runs when the page loads for the first time
@@ -478,9 +479,8 @@ window.addEventListener("load", () => {
 
 
 
-// ==========================================
 // 11. DISPLAY LOGGED IN USERNAME IN NAVBAR
-// ==========================================
+
 function displayWelcomeMessage() {
     let isLoggedIn = localStorage.getItem("isLoggedIn");
     let currentUser = localStorage.getItem("currentUser");
@@ -497,3 +497,43 @@ function displayWelcomeMessage() {
 
 // పేజీ లోడ్ అవ్వగానే ఈ ఫంక్షన్ ఆటోమేటిక్ గా రన్ అవుతుంది
 displayWelcomeMessage();
+
+
+
+// 12. PLACE ORDER HANDLER (FIX FOR REFRESH PROBLEM)
+
+
+// మీ checkout.html లో ఉన్న <form> ట్యాగ్‌కు id="checkout-form" అని ఉందో లేదో చెక్ చేసుకోండి
+// ఒకవేళ బటన్ కి మాత్రమే ID ఉంటే.. document.getElementById("place-order-btn") అని మార్చుకోవచ్చు
+const checkoutFormElement = document.getElementById("checkout-form") || document.getElementById("place-order-btn");
+
+if (checkoutFormElement) {
+    // అది ఫామ్ అయితే 'submit' కి, కేవలం బటన్ అయితే 'click' కి ఈవెంట్ రన్ అవుతుంది
+    const eventType = checkoutFormElement.tagName === "FORM" ? "submit" : "click";
+
+    checkoutFormElement.addEventListener(eventType, function(e) {
+        // 1. 🔥 పేజీ ఆటోమేటిక్‌గా రీఫ్రెష్ అయిపోకుండా ఇక్కడే గట్టిగా ఆపుతుంది!
+        e.preventDefault(); 
+
+        let finalCart = JSON.parse(localStorage.getItem("cart")) || [];
+        if (finalCart.length === 0) {
+            alert("❌ మీ కార్ట్ ఖాళీగా ఉంది! ఆర్డర్ ప్లేస్ చేయలేరు.");
+            return;
+        }
+
+        // 2. యూజర్‌కి సక్సెస్ మెసేజ్ చూపిస్తుంది
+        alert("🎉 TREND ARCADE: మీ ఆర్డర్ సక్సెస్‌ఫుల్‌గా ప్లేస్ అయింది! షాపింగ్ చేసినందుకు ధన్యవాదాలు.");
+
+        // 3. ఆర్డర్ అయిపోయింది కాబట్టి లోకల్ స్టోరేజ్ నుండి కార్ట్ డేటాను క్లియర్ చేస్తుంది
+        localStorage.removeItem("cart");
+        localStorage.removeItem("finalDiscountedTotal");
+
+        // 4. Navbar లో ఉన్న కార్ట్ కౌంటర్‌ని మళ్ళీ 0 కి అప్‌డేట్ చేస్తుంది
+        if (typeof updateCartIconCount === "function") {
+            updateCartIconCount();
+        }
+
+        // 5. ఆర్డర్ కన్ఫర్మ్ అయ్యాక యూజర్‌ని హోమ్ పేజీకి పంపుతుంది
+        window.location.href = "index.html";
+    });
+}

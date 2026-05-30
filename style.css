@@ -934,6 +934,7 @@ footer .copyright{
         box-shadow: 0 40px 60px rgba(0, 0, 0, 0.1);
         padding: 89px 0 0 10px;
         transition: 0.3s;
+        z-index: 999;
     }
     #navbar.active{
         right: 0px;
@@ -949,6 +950,24 @@ footer .copyright{
         color: #1a1a1a;
         font-size: 24px;
         padding-left: 20px;
+    }
+    #mobile a{
+        margin-right: 10px;
+    }
+    #mobile a #cart-count-mobile {
+        position: absolute;
+        top: 22px;         
+        right: 112px;       
+        background-color: #088178; 
+        color: white;       
+        font-size: 11px;   
+        font-weight: 700;
+        border-radius: 50%; 
+        padding: 2px 5px;   
+        min-width: 14px;
+        text-align: center;
+        line-height: 1;
+        z-index: 1;
     }
     #close{
         display: block;
@@ -1007,6 +1026,21 @@ footer .copyright{
 
 
 @media (max-width: 477px){
+    #mobile a #cart-count-mobile {
+        position: absolute;
+        top: 12px;         
+        right: 40px;       
+        background-color: #088178; 
+        color: white;       
+        font-size: 11px;   
+        font-weight: 700;
+        border-radius: 50%; 
+        padding: 2px 5px;   
+        min-width: 14px;
+        text-align: center;
+        line-height: 1;
+        z-index: 1;
+    }
     .section-p1{
         padding: 20px;
     }
