@@ -38,19 +38,17 @@ function handleRegister(event) {
     let regEmail = document.getElementById("reg-email").value.trim();
     let regPass = document.getElementById("reg-password").value.trim();
 
-    // గిట్‌హబ్ కోసం ఇప్పుడే తాజా డేటాను తెచ్చుకుంటున్నాం
     let usersList = JSON.parse(localStorage.getItem("registeredUsers")) || [];
 
-    // కేస్-సెన్సిటివ్ ప్రాబ్లం రాకుండా ఇద్దరినీ లోయర్ కేస్ లో చెక్ చేస్తున్నాం
     let userExists = usersList.find(user => user.username.toLowerCase() === regUser.toLowerCase());
     if (userExists) {
-        alert("❌ ఈ యూజర్ నేమ్ ఆల్రెడీ ఉంది! వేరేది ఎంచుకోండి.");
+        alert("❌ This username already exists! Please choose another one.");
         return;
     }
 
     let newUser = {
         fullName: regFullName,
-        username: regUser, // ఒరిజినల్ యూజర్ నేమ్ సేవ్ అవుతుంది
+        username: regUser,
         email: regEmail,
         password: regPass
     };
@@ -59,7 +57,7 @@ function handleRegister(event) {
     localStorage.setItem("registeredUsers", JSON.stringify(usersList));
 
     alert("🎉 Registration successful! Now sign in.");
-    toggleForms('login'); // లాగిన్ స్క్రీన్‌కి మారుతుంది
+    toggleForms('login');
 }
 
 // Login handling logic (Updated with GitHub Cache Fix)
@@ -69,10 +67,8 @@ function handleLogin(event) {
     let userInput = document.getElementById("login-username").value.trim();
     let passInput = document.getElementById("login-password").value.trim();
 
-    // ఫోర్స్ రీ-ఫెచ్: లోకల్ స్టోరేజ్ నుండి తాజా డేటాను లాక్కుంటున్నాం
     let usersList = JSON.parse(localStorage.getItem("registeredUsers")) || [];
 
-    // 💡 గిట్‌హబ్ ఫిక్స్: యూజర్ టైప్ చేసిన పేరును, సేవ్ అయిన పేరును లోయర్ కేస్ లో మార్చి పక్కాగా పోల్చి చూస్తాం
     let validUser = usersList.find(user => 
         user.username.toLowerCase() === userInput.toLowerCase() && 
         user.password === passInput
@@ -83,7 +79,6 @@ function handleLogin(event) {
         localStorage.setItem("currentUser", validUser.fullName);
         alert(`Welcome ${validUser.fullName}! Login successful`);
         
-        // గిట్‌హబ్ లో పేజీ మారేటప్పుడు పాత కాష్ లోడ్ అవ్వకుండా ఫోర్స్ రీఫ్రెష్ లాగా వెళ్తుంది
         window.location.replace("index.html"); 
     } else {
         alert("❌ Invalid username or password! (If not registered, please sign up first.)");
@@ -121,21 +116,20 @@ if (close) {
 // 2. LIVE CART ICON COUNTER FUNCTION
 
 function updateCartIconCount() {
-    // getElementById కి బదులు querySelectorAll వాడి డెస్క్‌టాప్, మొబైల్ కౌంటర్స్ రెండింటినీ సెలెక్ట్ చేస్తున్నాం
+
     let cartCountElements = document.querySelectorAll("#cart-count, #cart-count-mobile, .cart-count-class");
     if (cartCountElements.length === 0) return;
 
     let currentCart = JSON.parse(localStorage.getItem("cart"));
     
     let totalItems = 0;
-    // Safety check: ఒకవేళ కార్ట్ ఉంటేనే కౌంట్ లెక్కపెడుతుంది
+    // Safety check: Counts only if the cart exists.
     if (currentCart && Array.isArray(currentCart)) {
         currentCart.forEach(item => {
             totalItems += (parseInt(item.quantity) || 1);
         });
     }
     
-    // లూప్ ద్వారా డెస్క్‌టాప్ మరియు మొబైల్ ఐకాన్స్ రెండింటిలోనూ నెంబర్ అప్‌డేట్ అవుతుంది
     cartCountElements.forEach(elem => {
         elem.innerText = totalItems;
     });
@@ -395,7 +389,6 @@ if (document.getElementById("sproduct-name") && selectedProduct) {
 }
 
 
-
 // 9. COUPON CODE LOGIC (CHECKOUT FIX)
 
 let isCouponApplied = false;
@@ -491,14 +484,12 @@ function displayWelcomeMessage() {
     let welcomeLi = document.getElementById("user-welcome-li");
     let usernameSpan = document.getElementById("welcome-username");
 
-    // యూజర్ లాగిన్ అయి ఉంటే మరియు పేరు మెమరీలో ఉంటే..
     if (isLoggedIn === "true" && currentUser && welcomeLi && usernameSpan) {
-        usernameSpan.innerText = currentUser; // డమ్మీ 'User' ప్లేస్ లో ఒరిజినల్ పేరు పెడుతుంది
-        welcomeLi.style.display = "inline-block"; // దాచిన టెక్స్ట్ ని స్క్రీన్ పై చూపిస్తుంది
+        usernameSpan.innerText = currentUser; 
+        welcomeLi.style.display = "inline-block"; 
     }
 }
 
-// పేజీ లోడ్ అవ్వగానే ఈ ఫంక్షన్ ఆటోమేటిక్ గా రన్ అవుతుంది
 displayWelcomeMessage();
 
 
@@ -506,37 +497,30 @@ displayWelcomeMessage();
 // 12. PLACE ORDER HANDLER (FIX FOR REFRESH PROBLEM)
 
 
-// మీ checkout.html లో ఉన్న <form> ట్యాగ్‌కు id="checkout-form" అని ఉందో లేదో చెక్ చేసుకోండి
-// ఒకవేళ బటన్ కి మాత్రమే ID ఉంటే.. document.getElementById("place-order-btn") అని మార్చుకోవచ్చు
 const checkoutFormElement = document.getElementById("checkout-form") || document.getElementById("place-order-btn");
 
 if (checkoutFormElement) {
-    // అది ఫామ్ అయితే 'submit' కి, కేవలం బటన్ అయితే 'click' కి ఈవెంట్ రన్ అవుతుంది
+    
     const eventType = checkoutFormElement.tagName === "FORM" ? "submit" : "click";
 
     checkoutFormElement.addEventListener(eventType, function(e) {
-        // 1. 🔥 పేజీ ఆటోమేటిక్‌గా రీఫ్రెష్ అయిపోకుండా ఇక్కడే గట్టిగా ఆపుతుంది!
         e.preventDefault(); 
 
         let finalCart = JSON.parse(localStorage.getItem("cart")) || [];
         if (finalCart.length === 0) {
-            alert("❌ మీ కార్ట్ ఖాళీగా ఉంది! ఆర్డర్ ప్లేస్ చేయలేరు.");
+            alert("❌ Your cart is empty! You cannot place an order.");
             return;
         }
 
-        // 2. యూజర్‌కి సక్సెస్ మెసేజ్ చూపిస్తుంది
-        alert("🎉 TREND ARCADE: మీ ఆర్డర్ సక్సెస్‌ఫుల్‌గా ప్లేస్ అయింది! షాపింగ్ చేసినందుకు ధన్యవాదాలు.");
+        alert("🎉 TREND ARCADE: Your order has been placed successfully! Thank you for shopping.");
 
-        // 3. ఆర్డర్ అయిపోయింది కాబట్టి లోకల్ స్టోరేజ్ నుండి కార్ట్ డేటాను క్లియర్ చేస్తుంది
         localStorage.removeItem("cart");
         localStorage.removeItem("finalDiscountedTotal");
 
-        // 4. Navbar లో ఉన్న కార్ట్ కౌంటర్‌ని మళ్ళీ 0 కి అప్‌డేట్ చేస్తుంది
         if (typeof updateCartIconCount === "function") {
             updateCartIconCount();
         }
 
-        // 5. ఆర్డర్ కన్ఫర్మ్ అయ్యాక యూజర్‌ని హోమ్ పేజీకి పంపుతుంది
         window.location.href = "index.html";
     });
 }
